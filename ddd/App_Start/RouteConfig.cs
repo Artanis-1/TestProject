@@ -12,6 +12,7 @@ namespace ddd
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapMvcAttributeRoutes();//این متد برای این است که بتوانیم با کمک دیتا انوتیشن ها ادرس یو ار ال هر اکشن را تغییر دهیم و ادرس دلخواه خود را بگذاریم
 
             routes.MapRoute(
                 name: "Default",
