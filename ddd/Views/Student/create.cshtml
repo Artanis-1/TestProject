@@ -1,0 +1,98 @@
+﻿@model ddd.Models.T_Student
+
+@{
+    ViewBag.Title = "ثبت نام دانشجو";
+}
+
+<div class="jumbotron">
+    <h2 class="text-center">ثبت نام دانشجوی جدید</h2>
+</div>
+
+@using (Html.BeginForm("create", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))//if write enctype(multipart/form-data) can deliver images from user and save that in data base
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="form-row">
+        @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col">
+            @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.family, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col">
+            @Html.EditorFor(model => model.family, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.family, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-row">
+        @Html.LabelFor(model => model.phone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col">
+            @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col">
+            @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-row">
+        @Html.LabelFor(model => model.nationalCode, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col">
+            @Html.EditorFor(model => model.nationalCode, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.nationalCode, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col">
+            @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-row">
+        @Html.LabelFor(model => model.imageName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col">
+            <input type="file" id="imageName" name="imageName" class="form-control" />
+            @Html.ValidationMessageFor(model => model.imageName, "", new { @class = "text-danger" })
+        </div>
+
+        @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col">
+            <div class="checkbox">
+                <select id="gender" name="gender" class="form-control">
+                    <option hidden>
+                        جنسیت انتخاب نشده است
+                    </option>
+                    <option value="true">
+                        مرد
+                    </option>
+                    <option value="false">
+                        زن
+                    </option>
+                </select>
+                @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="form-row" style="float:left">
+        @Html.ActionLink("بازگشت به لیست دانشجویان", "Index", null, new { @class = "btn btn-info" })
+        <input type="submit" value="ثبت اطلاعات" class="btn btn-success" />
+    </div>
+}
+
+
+<script src="~/Scripts/jquery-3.0.0.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
