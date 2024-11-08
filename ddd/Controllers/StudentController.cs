@@ -26,10 +26,16 @@ namespace ddd.Controllers
         }
 
         [HttpPost]
-        public ActionResult create([Bind(Include = "name,family,phone,email,nationalCode,password,gender")] T_Student student, HttpPostedFileBase imageName)//can not recive parameter one by one from student model
+        public ActionResult create([Bind(Include = "name,family,email,phone,password,age,gender,marital")] T_Student student, HttpPostedFileBase imageName,string repeatPassword)//can not recive parameter one by one from student model
         {
             if (ModelState.IsValid)
             {
+                if (student.password!=repeatPassword)
+                {
+                    ModelState.AddModelError("password","رمز عبور با تکرار آن مطابقت ندارد!");
+                    return View(student);
+                }
+
                 string newImageName = "user.png";
 
                 if (imageName != null)
@@ -37,13 +43,13 @@ namespace ddd.Controllers
                     if (imageName.ContentType != "image/jpeg" && imageName.ContentType != "image/png")
                     {
                         ModelState.AddModelError("imageName", "تصویر شما فقط باید با فرمت png یا jpg یا jpeg باشد!");
-                        return View();//وقتی درون ویو استیودنت رو  بنویسیم هنگام اجرای ویو صفحه یکبار رفرش نمیشود و اطلاعات درون فیلد ها باقی میمانند و آن فیلدی که مشکل دارد رفرش میشود و ارور میدهد
+                        return View(student);//وقتی درون ویو استیودنت رو  بنویسیم هنگام اجرای ویو صفحه یکبار رفرش نمیشود و اطلاعات درون فیلد ها باقی میمانند و آن فیلدی که مشکل دارد رفرش میشود و ارور میدهد
                     }
 
                     if (imageName.ContentLength > 300000)
                     {
                         ModelState.AddModelError("imageName", "سایز تصویر شما نباید بیشتر از 300 کیلوبایت باشد!");
-                        return View();
+                        return View(student);
                     }
 
                     newImageName = Guid.NewGuid().ToString().Replace("-", "")+Path.GetExtension(imageName.FileName);
@@ -58,7 +64,7 @@ namespace ddd.Controllers
                 db.SaveChanges();//for save changes after adding student(in this view after using,, dispose the add student and after that save changes)
                 return RedirectToAction("index");
             }
-            return View();
+            return View(student);
         }
 
 

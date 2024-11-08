@@ -25,10 +25,16 @@
             @Html.DisplayNameFor(model => model.family)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.age)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.phone)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.marital)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.registerDate)
@@ -51,28 +57,41 @@
             @Html.DisplayFor(modelItem => item.family)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.age)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.phone)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.email)
         </td>
         <td>
+            @if (item.marital == true)
+            {
+                <span>متاهل</span>
+            }
+            else
+            {
+                <span>مجرد</span>
+            }
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.registerDate)
         </td>
         <td>
             @if (item.isActive == true)
-                {
-                    <span style="color:green">فعال</span>
-                }
-             else
-                {
-                    <span style="color:red">مسدود</span>
-                }
+            {
+                <span style="color:green">فعال</span>
+            }
+            else
+            {
+                <span style="color:red">مسدود</span>
+            }
         </td>
         <td>
-            @Html.ActionLink("ویرایش", "Edit", new { id=item.id } , new {@class ="btn btn-warning" }) |
-            @Html.ActionLink("جزئیات", "Details", new { id=item.id }, new { @class = "btn btn-info" }) |
-            @Html.ActionLink("حذف", "Delete", new { id=item.id }, new { @class = "btn btn-danger" })
+            @Html.ActionLink("ویرایش", "Edit", new { id = item.id }, new { @class = "btn btn-warning" }) |
+            @Html.ActionLink("جزئیات", "Details", new { id = item.id }, new { @class = "btn btn-info" }) |
+            @Html.ActionLink("حذف", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })
         </td>
     </tr>
     counter++;

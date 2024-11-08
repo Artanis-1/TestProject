@@ -20,7 +20,7 @@
           <Property Name="gender" Type="bit" />
           <Property Name="nationalCode" Type="char" MaxLength="10" />
           <Property Name="imageName" Type="varchar" MaxLength="50" />
-          <Property Name="martial" Type="bit" />
+          <Property Name="marital" Type="bit" />
           <Property Name="age" Type="int" />
         </EntityType>
         <EntityContainer Name="db_dddModelStoreContainer">
@@ -45,8 +45,8 @@
           <Property Name="gender" Type="Boolean" />
           <Property Name="nationalCode" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="imageName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="martial" Type="Boolean" />
           <Property Name="age" Type="Int32" />
+          <Property Name="marital" Type="Boolean" />
         </EntityType>
         <EntityContainer Name="db_dddEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="T_Student" EntityType="Self.T_Student" />
@@ -60,8 +60,8 @@
           <EntitySetMapping Name="T_Student">
             <EntityTypeMapping TypeName="db_dddModel.T_Student">
               <MappingFragment StoreEntitySet="T_Student">
+                <ScalarProperty Name="marital" ColumnName="marital" />
                 <ScalarProperty Name="age" ColumnName="age" />
-                <ScalarProperty Name="martial" ColumnName="martial" />
                 <ScalarProperty Name="imageName" ColumnName="imageName" />
                 <ScalarProperty Name="nationalCode" ColumnName="nationalCode" />
                 <ScalarProperty Name="gender" ColumnName="gender" />

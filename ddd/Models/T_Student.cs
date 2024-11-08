@@ -11,75 +11,21 @@ namespace ddd.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    
     public partial class T_Student
     {
-        [Display(Name = "آیدی")]
-        [Required(ErrorMessage = "فیلد {0} نمیتواند خالی باشد")]
         public int id { get; set; }
-
-        [Display(Name = "نام")]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "{0} باید حداقل 2 و حداکثر 20 کاراکتر داشته باشد")]
-        [Required(ErrorMessage = "فیلد {0} نمیتواند خالی باشد")]
         public string name { get; set; }
-
-        [Display(Name = "نام خانوادگی")]
-        [Required(ErrorMessage = "فیلد {0} نمیتواند خالی باشد")]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "{0} باید حداقل 2 و حداکثر 20 کاراکتر داشته باشد")]
         public string family { get; set; }
-
-        [Display(Name = "شماره همراه")]
-        [Required(ErrorMessage = "فیلد {0} نمیتواند خالی باشد")]
-        [RegularExpression("(09)[0-9]{9}", ErrorMessage = "لطفا شماره موبایل صحیح را وارد کنید")]
         public string phone { get; set; }
-
-        [Display(Name = "ایمیل")]
-        [EmailAddress(ErrorMessage = "لطفا ایمیل صحیح را وارد کنید")]
         public string email { get; set; }
-
-        [Display(Name = "تاریخ عضویت")]
-        [Required(ErrorMessage = "فیلد {0} اجباری است!")]
-        [DisplayFormat(DataFormatString = "{0: dddd, dd MMMM yyyy}")]
         public System.DateTime registerDate { get; set; }
-
-        [Display(Name = "وضعیت")]
         public bool isActive { get; set; }
-
-        [Display(Name = "رمز عبور")]
-        [Required(ErrorMessage = "فیلد {0} اجباری است!")]
-        [StringLength(20, MinimumLength = 2, ErrorMessage = "{0} باید حداقل 8 و حداکثر 20 کاراکتر داشته باشد")]
-        [DataType(DataType.Password)]
         public string password { get; set; }
-
-        [Display(Name = "جنیست")]
         public Nullable<bool> gender { get; set; }
-
-        [Display(Name = "کد ملی")]
-        [Required(ErrorMessage = "فیلد {0} اجباری است!")]
-        [RegularExpression("[0-9]{10}", ErrorMessage = "لطفا {0} خود را صحیح وارد کنید")]
         public string nationalCode { get; set; }
-
-        [Display(Name = "تصویر")]
         public string imageName { get; set; }
-        [Display(Name ="وضعیت تاهل")]
-        public Nullable<bool> martial { get; set; }
-        [Display(Name ="سن")]
         public Nullable<int> age { get; set; }
-        public T_Student()
-        {
-
-        }
-        public T_Student(int id, string name, string family, string phone, string email, DateTime date, bool isActive)
-        {
-            this.id = id;
-            this.name = name;
-            this.family = family;
-            this.phone = phone;
-            this.email = email;
-            this.registerDate = date;
-            this.isActive = isActive;
-        }
+        public Nullable<bool> marital { get; set; }
     }
 }
