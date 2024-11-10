@@ -1,0 +1,153 @@
+﻿@model ddd.Models.T_Student
+
+@{
+    string name = Model.name + " " + Model.family;
+    ViewBag.Title = "Delete";
+}
+
+<div class="jumbotron">
+    <h2 class="text-center">
+        حذف دانشجو
+    </h2>
+</div>
+
+<h3>آیا مطمئن هستید که میخواهید این دانشجو را حذف کنید؟</h3>
+
+<div class="form-row">
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.name)
+        </div>
+        <div class="form-control">
+            @Html.DisplayFor(model => model.name)
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.family)
+        </div>
+        <div class="form-control">
+            @Html.DisplayFor(model => model.family)
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="form-row">
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.email)
+        </div>
+        <div class="form-control">
+            @Html.DisplayFor(model => model.email)
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.phone)
+        </div>
+        <div class="form-control">
+            @Html.DisplayFor(model => model.phone)
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="form-row">
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.gender)
+        </div>
+        <div class="form-control">
+            @if (Model.gender == true)
+            {
+                <span>مرد</span>
+            }
+            else
+            {
+                <span>زن</span>
+            }
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.age)
+        </div>
+        <div class="form-control">
+            @Html.DisplayFor(model => model.age)
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="form-row">
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.isActive)
+        </div>
+        <div class="form-control">
+            @if (Model.isActive == true)
+            {
+                <span style="color:green">فعال</span>
+            }
+            else
+            {
+                <span style="color:red">غیر فعال</span>
+            }
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.marital)
+        </div>
+        <div class="form-control">
+            @if (Model.marital == true)
+            {
+                <span>متاهل</span>
+            }
+            else
+            {
+                <span>مجرد</span>
+            }
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="form-row">
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.imageName)
+        </div>
+        <img src="~/images/profileImages/@Model.imageName" style="width:120px; height:120px" />
+    </div>
+
+    <div class="col">
+        <div class="form-label">
+            @Html.DisplayNameFor(model => model.registerDate)
+        </div>
+        <div class="form-control">
+            @Html.DisplayFor(model => model.registerDate)
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div style="float: left !important; margin-top: 15px !important; margin-bottom: 15px !important ">
+        @Html.ActionLink("بازگشت به لیست دانشجویان", "Index", null, new { @class = "btn btn-primary" })
+        <input type="submit" value="حذف @name" class="btn btn-danger" />
+    </div>
+}
+</div>

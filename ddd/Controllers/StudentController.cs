@@ -12,13 +12,15 @@ namespace ddd.Controllers
     public class StudentController : Controller
     {
         db_dddEntities db = new db_dddEntities();
-
+        #region List
         public ActionResult Index()
         {
             var studentList = db.T_Student;//dont need convert t-student to list because automaticaly convert it
             return View(studentList);
         }
+        #endregion
 
+        #region Create
         [HttpGet]
         public ActionResult create()
         {
@@ -26,13 +28,14 @@ namespace ddd.Controllers
         }
 
         [HttpPost]
-        public ActionResult create([Bind(Include = "name,family,email,phone,password,age,gender,marital")] T_Student student, HttpPostedFileBase imageName,string repeatPassword)//can not recive parameter one by one from student model
+        [ValidateAntiForgeryToken]
+        public ActionResult create([Bind(Include = "name,family,email,phone,password,age,gender,marital")] T_Student student, HttpPostedFileBase imageName, string repeatPassword)//can not recive parameter one by one from student model
         {
             if (ModelState.IsValid)
             {
-                if (student.password!=repeatPassword)
+                if (student.password != repeatPassword)
                 {
-                    ModelState.AddModelError("password","رمز عبور با تکرار آن مطابقت ندارد!");
+                    ModelState.AddModelError("password", "رمز عبور با تکرار آن مطابقت ندارد!");
                     return View(student);
                 }
 
@@ -52,8 +55,8 @@ namespace ddd.Controllers
                         return View(student);
                     }
 
-                    newImageName = Guid.NewGuid().ToString().Replace("-", "")+Path.GetExtension(imageName.FileName);
-                    imageName.SaveAs(Server.MapPath("/images/profileImages/"+newImageName));//The photo will be stored on the server, not on the database(photo name saved in data base)
+                    newImageName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(imageName.FileName);
+                    imageName.SaveAs(Server.MapPath("/images/profileImages/" + newImageName));//The photo will be stored on the server, not on the database(photo name saved in data base)
                 }
                 student.imageName = newImageName;
 
@@ -66,19 +69,41 @@ namespace ddd.Controllers
             }
             return View(student);
         }
+        #endregion
 
-
+        #region Details
         [HttpGet]
         public ActionResult Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var student =  db.T_Student.Find(id);
+            var student = db.T_Student.Find(id);
 
-            if (student == null) 
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(student);
+        }
+        #endregion
+
+        #region Delete
+
+        [HttpGet]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var student = db.T_Student.Find(id);
+
+            if (student == null)
             {
                 return HttpNotFound();
             }
@@ -86,5 +111,58 @@ namespace ddd.Controllers
             return View(student);
         }
 
+        [HttpPost, ActionName("Delete")] //چون دوتا اکشن هم نام و هم ورودی داریم ارور میدهد از یک طرق باید نام دو اکشن نیز یکسان باشد پس از دیتا انوتیشن رو به رو استفاده میکنیم
+        [ValidateAntiForgeryToken] // برای جلوگیری از حملاتی استفاده میشود که هکر ها سرور را با اطلاعات بی مورد یا تبلیغات پر میکنند.علاوه بر اینجا باید در ویوی این اکشن هم در قسمت بعد از یوزینگ انتی فورجری تگ اچتمل هلپر نیز نوشته شود
+        //حتما باید بالای اکشن های پست نوشته شود چون اکشن های پست اطلاعات را به سرور ارسال می کنند
+        public ActionResult DeleteStudent(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var student = db.T_Student.Find(id);
+
+            if (student==null)
+            {
+                return HttpNotFound();
+            }
+
+            if (student!=null)
+            {
+                db.T_Student.Remove(student);
+                db.SaveChanges();
+
+                if (student.imageName!="user.png")
+                {
+                    if (System.IO.File.Exists(Server.MapPath("/images/profileImages") + student.imageName))
+                    {
+                        System.IO.File.Delete(Server.MapPath("/images/profileImages") + student.imageName);
+                    }
+                }    
+
+                return RedirectToAction("Index");
+            }
+
+
+
+            return View(student);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #endregion
     }
 }
