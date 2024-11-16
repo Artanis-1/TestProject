@@ -6,12 +6,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Net;
+using System.Data.Entity;
 
 namespace ddd.Controllers
 {
     public class StudentController : Controller
     {
         db_dddEntities db = new db_dddEntities();
+
         #region List
         public ActionResult Index()
         {
@@ -91,6 +93,60 @@ namespace ddd.Controllers
         }
         #endregion
 
+        #region Edit
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var student = db.T_Student.Find(id);
+
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(student);
+        }
+
+        [HttpPost]
+        public ActionResult Edit([Bind(Include = "id,name,family,email,registerDate,isActive,nationalCode,imageName,phone,password,age,gender,marital")] T_Student student,HttpPostedFileBase imageUpload)
+        {
+            if (ModelState.IsValid)
+            {
+                if (imageUpload!=null)
+                {
+                    if (imageUpload.ContentType != "image/jpeg" && imageUpload.ContentType != "image/png")
+                    {
+                        ModelState.AddModelError("imageName", "تصویر شما فقط باید با فرمت png یا jpg یا jpeg باشد!");
+                        return View(student);
+                    }
+
+                    if (imageUpload.ContentLength > 300000)
+                    {
+                        ModelState.AddModelError("imageName", "سایز تصویر شما نباید بیشتر از 300 کیلوبایت باشد!");
+                        return View(student);
+                    }
+                    string newImageName = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(imageUpload.FileName);
+                    imageUpload.SaveAs(Server.MapPath("/images/profileImages/" + newImageName));
+                    student.imageName = newImageName;
+                }
+                db.Entry(student).State=EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+           return View(student);
+        }
+
+
+
+
+
+        #endregion
+
         #region Delete
 
         [HttpGet]
@@ -123,23 +179,23 @@ namespace ddd.Controllers
 
             var student = db.T_Student.Find(id);
 
-            if (student==null)
+            if (student == null)
             {
                 return HttpNotFound();
             }
 
-            if (student!=null)
+            if (student != null)
             {
                 db.T_Student.Remove(student);
                 db.SaveChanges();
 
-                if (student.imageName!="user.png")
+                if (student.imageName != "user.png")
                 {
                     if (System.IO.File.Exists(Server.MapPath("/images/profileImages") + student.imageName))
                     {
                         System.IO.File.Delete(Server.MapPath("/images/profileImages") + student.imageName);
                     }
-                }    
+                }
 
                 return RedirectToAction("Index");
             }
@@ -163,6 +219,17 @@ namespace ddd.Controllers
 
 
 
+        #endregion
+
+        #region Dispose
+        protected override void Dispose(bool disposing)//بستن کانکشن های موجود هنگام خارج شدن از صفحه سایت
+        {
+            if (disposing)//== if(disposing==true)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         #endregion
     }
 }
